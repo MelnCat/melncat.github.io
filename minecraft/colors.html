@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Minecraft Color Codes</title>
+		<style>
+			html, body {
+				background-color: #222;
+				font-family: monospace;
+				color: #eee;
+			}
+			main {
+				padding: 0 10px;
+			}
+			#bit-container {
+				display: grid;
+				font-size: 5rem;
+				padding: 16px;
+				width: fit-content;
+				margin: 0 auto;
+				column-gap: 16px;
+				grid-template: repeat(2, auto) / repeat(4, auto);
+				text-align: center;
+			}
+			.bit-desc {
+				font-size: 2rem;
+				font-weight: bold;
+			}
+			.bit {
+				padding: 0 8px;
+				cursor: pointer;
+			}
+			.bit:hover {
+				background-color: #fff1;
+			}
+			.bit:active {
+				background-color: #fff2;
+			}
+			#n {
+				text-align: center;
+				font-size: 3.5rem;
+				margin: 16px 0 0;
+			}
+			h2 {
+				text-align: center;
+				font-size: 5rem;
+				margin: 16px auto 0;
+				display: flex;
+				padding: 12px 28px;
+				width: fit-content;
+			}
+			.red { color: #AA0000; }
+			.blue { color: #0000AA; }
+			.green { color: #00AA00; }
+			.white { color: white; }
+		</style>
+	</head>
+	<body>
+		<main>
+			<p id="bit-container">
+				<span class="bit-desc white">L</span>
+				<span class="bit-desc red">R</span>
+				<span class="bit-desc green">G</span>
+				<span class="bit-desc blue">B</span>
+				<span class="bit">0</span>
+				<span class="bit">0</span>
+				<span class="bit">0</span>
+				<span class="bit">0</span>
+			</p>
+			<p class="display">
+				<h2 id="c"></h2>
+				<p id="n"></p>
+			</p>
+		</main>
+		<script>
+			const colorCodes = [
+				"#000000",
+				"#0000AA",
+				"#00AA00",
+				"#00AAAA",
+				"#AA0000",
+				"#AA00AA",
+				"#FFAA00",
+				"#AAAAAA",
+				"#555555",
+				"#0000FF",
+				"#00FF00",
+				"#00FFFF",
+				"#FF5555",
+				"#FF55FF",
+				"#FFFF55",
+				"#FFFFFF"
+			];
+			const n = document.getElementById("n");
+			const c = document.getElementById("c");
+			const bits = [...document.getElementById("bit-container").children].filter(x => x.classList.contains("bit"));
+			const update = () => {
+				const num = parseInt(bits.map(x => x.textContent).join(""), 2);
+				n.textContent = num;
+				c.textContent = `&${num.toString(16)}`;
+				c.style.backgroundColor = colorCodes[num];
+			}
+			for (const c of bits) c.addEventListener("click", e => {
+				e.target.textContent = +!+e.target.textContent;
+				update();
+			});
+			update();
+		</script>
+	</body>
+</html>
