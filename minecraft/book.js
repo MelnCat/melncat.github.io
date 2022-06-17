@@ -66,22 +66,47 @@ const createBookCover = (name, author, part, totalParts) => {
 	];
 };
 
-
+/**
+ * 
+ * @param {string} title 
+ * @param {string} author 
+ * @param {string} str 
+ * @returns {string[][]}
+ */
 const makeBook = (title, author, str) => {
 	const l = getLines(str);
 	const pages = [...chunk(l, 14)].map(x => `${x.join("\n")}`);
 	const books = chunk(pages, 99);
-	return books.map((x, i) => [createBookCover(title, author, i + 1, books.length), ])
+	
+	return books.map((x, i) => [createBookCover(title, author, i + 1, books.length).join("\n"), ...x])
 }
 
-const title = document.getElementById("title");
-const author = document.getElementById("author");
-const text = document.getElementById("text");
+const titleElem =  document.getElementById("title");
+const authorElem = document.getElementById("author");
+const textElem = document.getElementById("text");
 const out = document.getElementById("out");
 const clicky = document.getElementById("clicky");
 
+if (!(titleElem instanceof HTMLInputElement && authorElem instanceof HTMLInputElement && textElem instanceof HTMLTextAreaElement))
+	throw Error("????");
+
 clicky.addEventListener("click", () => {
-	out.innerText = (makeBook(title.value, author.value, text.value));
-	console.log(makeBook(title.value, author.value, text.value))
+	const title = titleElem.value;
+	const author = authorElem.value;
+	const text = textElem.value;
+	const books = makeBook(title, author, text);
+	if (books.length === 1) {
+		const book = books[0];
+		const data = toStendhal(title, author, book);
+		const blob = new Blob([data], { type: "text/plain" });
+		out.innerHTML = `<a download="book.stendhal" href="${URL.createObjectURL(blob)}">cick here to download meow</a>`
+	}
 	// todo use blob download maybe fflate the into zip for 
+	// DONT REMEMBER PREFIX IS "#- " wit hsace
 })
+
+const toStendhal = (title, author, pages) => `title: ${title}
+author: ${author}
+pages:
+${pages.map(x => `#- ${x}`).join("\n")}
+`
