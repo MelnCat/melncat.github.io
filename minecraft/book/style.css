@@ -38,9 +38,11 @@ main {
 	margin-bottom: 1em;
 	flex-direction: column;
 }
-.inputLine > input {
+.inputLine > input,
+#text {
+	font-family: inherit;
 	padding: 0.75em;
-	font-size: 1em;
+	font-size: 0.95em;
 	width: 100%;
 }
 .inputLine > label {
@@ -52,6 +54,65 @@ main {
 }
 input:focus ~ label {
 	font-weight: bold;
+}
+
+.button {
+	background: none;
+	cursor: pointer;
+	width: fit-content;
+	padding: 0.4em 0.8em;
+	font-family: inherit;
+	font-weight: 500;
+	font-size: 1.1em;
+	font-weight: 500;
+	transition-property: color, background-color;
+	transition-duration: 0.15s;
+	text-decoration: none;
+	text-align: center;
+	display: inline-block;
+}
+aside {
+	padding-left: 1em;
+	width: 30%;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5em;
+}
+p {
+	margin: 0;
+}
+#generate {
+	border: #1a5b1c solid 1px;
+	color: #1a5b1c;
+}
+#generate:hover {
+	background-color: #1a5b1c11;
+}
+#generate:active {
+	background-color: #1a5b1c25;
+}
+.download {
+	border: #122b45 solid 1px;
+	color: #122b45;
+	width: 100%;
+	margin-bottom: 0.5em;
+}
+.download:hover {
+	background-color: #122b4511;
+}
+.download:active {
+	background-color: #122b4525;
+}
+.download-part {
+	border: #503720 solid 1px;
+	color: #503720;
+	width: 100%;
+}
+.download-part:hover {
+	background-color: #50372011;
+}
+.download-part:active {
+	background-color: #50372025;
 }
 
 @media screen and (max-width: 768px) {

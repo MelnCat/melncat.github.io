@@ -101,17 +101,27 @@ if (
 
 textElem.style.height = `${textElem.scrollHeight}px`;
 
+const blobLink = (filename, content, blob, buttonClass = "download") => {
+	const link = document.createElement("a");
+	link.download = filename;
+	link.href = URL.createObjectURL(blob);
+	link.innerText = content;
+	link.classList.add("button", buttonClass)
+	return link.outerHTML;
+}
+
 generate.addEventListener("click", () => {
 	const title = titleElem.value;
 	const author = authorElem.value;
 	const text = textElem.value;
+	if (!(title && author && text)) return;
 	out.innerText = "Loading...";
 	const books = makeBook(title, author, text);
 	if (books.length === 1) {
 		const book = books[0];
 		const data = toStendhal(title, author, book);
 		const blob = new Blob([data]);
-		out.innerHTML = `<a download="book.stendhal" href="${URL.createObjectURL(blob)}">cick here to download meow</a>`;
+		out.innerHTML = blobLink("book.stendhal", "Download Book", blob);
 	} else {
 		const files = books.map((x, i) => [`book_pt${i + 1}.stendhal`, toStendhal(title, author, x)]);
 		const blobs = files.map(x => new Blob([x[1]]));
@@ -121,9 +131,9 @@ generate.addEventListener("click", () => {
 			(err, data) => {
 				if (err) throw err;
 				const all = new Blob([data]);
-				out.innerHTML = `<a download="book_pts.zip" href="${URL.createObjectURL(all)}">Download All</a><br />${blobs
-					.map((x, i) => `<a download="book_pt${i + 1}.stendhal" href="${URL.createObjectURL(x)}">Part ${i + 1}</a>`)
-					.join(" ")}`;
+				out.innerHTML = `${blobLink("books.zip", "Download All (zip)", all)}${blobs
+					.map((x, i) => blobLink(`book_pt${i + 1}.stendhal`, `Download Part ${i + 1}`, x, "download-part"))
+					.join("")}`;
 			}
 		);
 	}
