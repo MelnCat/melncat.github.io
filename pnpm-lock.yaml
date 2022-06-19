@@ -1,0 +1,13 @@
+lockfileVersion: 5.3
+
+specifiers:
+  fflate: ^0.7.3
+
+dependencies:
+  fflate: 0.7.3
+
+packages:
+
+  /fflate/0.7.3:
+    resolution: {integrity: sha512-0Zz1jOzJWERhyhsimS54VTqOteCNwRtIlh8isdL0AXLo0g7xNTfTL7oWrkmCnPhZGocKIkWHBistBrrpoNH3aw==}
+    dev: false

@@ -1,4 +1,7 @@
 import { Font } from "./ported.js";
+import { zip } from "https://cdn.skypack.dev/fflate?min";
+
+const encoder = new TextEncoder();
 
 const chunk = (arr, n) =>
 	arr.reduce((l, c, i) => (l[Math.floor(i / n)] ? l[Math.floor(i / n)].push(c) : (l[Math.floor(i / n)] = [c]), l), []);
@@ -62,51 +65,74 @@ const createBookCover = (name, author, part, totalParts) => {
 		...nameLines,
 		...Array(Math.ceil(namePadding)).fill(""),
 		hr,
-		...(totalParts <= 1 ? authorLines : ["", `> Part ${part + 1} of ${totalParts}`, "", ...authorLines]),
+		...(totalParts <= 1 ? authorLines : ["", `> Part ${part} of ${totalParts}`, "", ...authorLines]),
 	];
 };
 
 /**
- * 
- * @param {string} title 
- * @param {string} author 
- * @param {string} str 
+ *
+ * @param {string} title
+ * @param {string} author
+ * @param {string} str
  * @returns {string[][]}
  */
 const makeBook = (title, author, str) => {
 	const l = getLines(str);
 	const pages = [...chunk(l, 14)].map(x => `${x.join("\n")}`);
 	const books = chunk(pages, 99);
-	
-	return books.map((x, i) => [createBookCover(title, author, i + 1, books.length).join("\n"), ...x])
-}
 
-const titleElem =  document.getElementById("title");
+	return books.map((x, i) => [createBookCover(title, author, i + 1, books.length).join("\n"), ...x]);
+};
+
+const titleElem = document.getElementById("title");
 const authorElem = document.getElementById("author");
 const textElem = document.getElementById("text");
 const out = document.getElementById("out");
-const clicky = document.getElementById("clicky");
+const generate = document.getElementById("generate");
 
-if (!(titleElem instanceof HTMLInputElement && authorElem instanceof HTMLInputElement && textElem instanceof HTMLTextAreaElement))
+if (
+	!(
+		titleElem instanceof HTMLInputElement &&
+		authorElem instanceof HTMLInputElement &&
+		textElem instanceof HTMLTextAreaElement
+	)
+)
 	throw Error("????");
 
-clicky.addEventListener("click", () => {
+textElem.style.height = `${textElem.scrollHeight}px`;
+
+generate.addEventListener("click", () => {
 	const title = titleElem.value;
 	const author = authorElem.value;
 	const text = textElem.value;
+	out.innerText = "Loading...";
 	const books = makeBook(title, author, text);
 	if (books.length === 1) {
 		const book = books[0];
 		const data = toStendhal(title, author, book);
-		const blob = new Blob([data], { type: "text/plain" });
-		out.innerHTML = `<a download="book.stendhal" href="${URL.createObjectURL(blob)}">cick here to download meow</a>`
+		const blob = new Blob([data]);
+		out.innerHTML = `<a download="book.stendhal" href="${URL.createObjectURL(blob)}">cick here to download meow</a>`;
+	} else {
+		const files = books.map((x, i) => [`book_pt${i + 1}.stendhal`, toStendhal(title, author, x)]);
+		const blobs = files.map(x => new Blob([x[1]]));
+		const zipped = zip(
+			Object.fromEntries(files.map(([a, b]) => [a, encoder.encode(b)])),
+			{ comment: "Generated with MelnCat's book generator" },
+			(err, data) => {
+				if (err) throw err;
+				const all = new Blob([data]);
+				out.innerHTML = `<a download="book_pts.zip" href="${URL.createObjectURL(all)}">Download All</a><br />${blobs
+					.map((x, i) => `<a download="book_pt${i + 1}.stendhal" href="${URL.createObjectURL(x)}">Part ${i + 1}</a>`)
+					.join(" ")}`;
+			}
+		);
 	}
-	// todo use blob download maybe fflate the into zip for 
+	// todo use blob download maybe fflate the into zip for
 	// DONT REMEMBER PREFIX IS "#- " wit hsace
-})
+});
 
 const toStendhal = (title, author, pages) => `title: ${title}
 author: ${author}
 pages:
 ${pages.map(x => `#- ${x}`).join("\n")}
-`
+`;

@@ -1,0 +1,12 @@
+{
+	"name": "melncat.github.io",
+	"version": "1.0.0",
+	"repository": "https://github.com/MelnCat/melncat.github.io",
+	"author": "MelnCat",
+	"license": "MIT",
+	"private": true,
+	"type": "module",
+	"dependencies": {
+		"fflate": "^0.7.3"
+	}
+}
