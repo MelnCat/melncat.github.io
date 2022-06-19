@@ -123,7 +123,7 @@ generate.addEventListener("click", () => {
 		const blob = new Blob([data]);
 		out.innerHTML = blobLink("book.stendhal", "Download Book", blob);
 	} else {
-		const files = books.map((x, i) => [`book_pt${i + 1}.stendhal`, toStendhal(title, author, x)]);
+		const files = books.map((x, i) => [`book_pt${i + 1}.stendhal`, toStendhal(`${title} (${i + 1}/${books.length})`, author, x)]);
 		const blobs = files.map(x => new Blob([x[1]]));
 		const zipped = zip(
 			Object.fromEntries(files.map(([a, b]) => [a, encoder.encode(b)])),
