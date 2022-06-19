@@ -11,7 +11,7 @@ const hr = "===================";
 
 const centerBookLine = str => {
 	const width = Font.getWidth(str);
-	return `${" ".repeat(Math.floor((maxLineWidth - width) / 2 / spaceWidth) - 1)}${str}`;
+	return `${" ".repeat(Math.max(Math.floor((maxLineWidth - width) / 2 / spaceWidth) - 1, 0))}${str}`;
 };
 
 /**
