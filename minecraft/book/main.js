@@ -29,11 +29,12 @@ const getLines = rawText => {
 		.map(l =>
 			l.flatMap(x => {
 				if (Font.getWidth(x) <= maxLineWidth) return [x];
-				return [...x].reduce(
+				const chars = x.match(/(§.|.)/g) ?? [""];
+				return chars.reduce(
 					(l, c) =>
-						Font.getWidth(l.at(-1) + c) > maxLineWidth
+						(Font.getWidth(l.at(-1) + c) > maxLineWidth
 							? l.concat(c.toString())
-							: l.slice(0, -1).concat(l.at(-1) + c),
+							: l.slice(0, -1).concat(l.at(-1) + c)),
 					[""]
 				);
 			})

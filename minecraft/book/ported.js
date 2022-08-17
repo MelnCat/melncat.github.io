@@ -27,6 +27,7 @@ class MapFont {
 	getWidth(text) {
 		if (text === "") return 0;
 		if (!this.isValid(text)) return this.getWidth(text.split("").map(x => this.isValid(x) ? x : "@").join(""));
+		text = text.replace(/§./g, "")
 
 		let result = 0;
 		for (let i = 0; i < text.length; i++) {
