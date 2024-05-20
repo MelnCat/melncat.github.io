@@ -1,0 +1,11 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h1>...</h1>
+  </body>
+  <script>
+    const gl = document.createElement("canvas").getContext("webgl");
+    const debugInfo = gl.getExtension("WEBGL_debug_renderer_info");
+    document.querySelector("h1").innerText = gl.getParameter(debugInfo.UNMASKED_RENDERER_WEBGL);
+  </script>
+</html>
