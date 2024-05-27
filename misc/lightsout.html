@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Lights Out Solver</title>
+	</head>
+	<body>
+		<textarea id="input" rows="10" cols="10"></textarea>
+		<textarea id="output" rows="10" cols="10" readonly></textarea>
+		<script>
+			// From https://puzzling.stackexchange.com/a/76141
+			const solve = map => {
+				const maxlen = Math.max(...map.split("\n").map(x => x.length));
+				const kk = map
+					.split("\n")
+					.map(x => x.padEnd(" ", maxlen))
+					.map(x => x.split(""));
+				function createArray2D(rows, cols, fillValue = 0) {
+					const arr = [];
+					for (let i = 0; i < rows; i++) {
+						arr.push(new Array(cols).fill(fillValue));
+					}
+					return arr;
+				}
+
+				const setup = kk.map(x => x.map(y => y !== " "));
+
+				const start = kk
+					.flat()
+					.filter(x => x !== " ")
+					.map(x => x === "1");
+
+				const M = createArray2D(setup.flat().filter(Boolean).length, setup.flat().filter(Boolean).length + 1, false);
+				start.forEach((value, index) => (M[index][M[0].length - 1] = Boolean(value)));
+
+				const index = createArray2D(setup.length, setup[0].length, 0);
+				let k = 0;
+				for (let i = 0; i < setup.length; i++) {
+					for (let j = 0; j < setup[i].length; j++) {
+						index[i][j] = k * setup[i][j];
+						k += setup[i][j];
+					}
+				}
+
+				for (let i = 0; i < setup.length; i++) {
+					for (let j = 0; j < setup[i].length; j++) {
+						if (!setup[i][j]) continue;
+						M[index[i][j]][index[i][j]] = true;
+						if (i > 0 && setup[i - 1][j]) M[index[i][j]][index[i - 1][j]] = true;
+						if (j > 0 && setup[i][j - 1]) M[index[i][j]][index[i][j - 1]] = true;
+						if (i < setup.length - 1 && setup[i + 1][j]) M[index[i][j]][index[i + 1][j]] = true;
+						if (j < setup[i].length - 1 && setup[i][j + 1]) M[index[i][j]][index[i][j + 1]] = true;
+					}
+				}
+
+				for (let i = 0; i < M.length; i++) {
+					let t = i;
+					while (t < M.length && !M[t][i]) {
+						t++;
+						if (t === M.length) {
+							t = i;
+							break;
+						}
+					}
+					if (t > i) {
+						const temp = M[t];
+						M[t] = M[i];
+						M[i] = temp;
+					}
+					for (let t = 0; t < M.length; t++) {
+						if (t !== i && M[t][i]) {
+							M[t] = M[t].map((val, index) => val ^ M[i][index]);
+						}
+					}
+				}
+
+				let i = 0;
+				const sol = M.map(row => row[row.length - 1]);
+				return setup.map(x => x.map(y => (!y ? " " : +sol[i++])).join("")).join("\n");
+			};
+			const onChange = element => {
+				element.value = element.value.replace(/[^01 \n]/g, "");
+				const value = element.value;
+				const map = solve(value);
+				document.getElementById("output").value = map;
+			}
+			document.getElementById("input").addEventListener("input", e => onChange(e.target));
+		</script>
+	</body>
+</html>
