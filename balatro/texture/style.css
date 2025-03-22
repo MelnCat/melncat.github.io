@@ -1,0 +1,44 @@
+@font-face {
+	font-family: m6x11;
+	src: url("./assets/m6x11plus.ttf");
+	font-display: fallback;
+}
+body {
+	font-family: m6x11, sans-serif;
+	font-size: 1.2em;
+}
+h1 {
+	margin-bottom: 0.2em;
+}
+p {
+	margin-bottom: 0.5em;
+}
+input,
+button,
+input::file-selector-button {
+	font-family: inherit;
+}
+input {
+	font-size: 1em;
+}
+button,
+input[type="file"] {
+	font-size: 1em;
+	display: block;
+}
+.required {
+	color: #aa0000;
+}
+fieldset {
+	display: flex;
+	flex-direction: column;
+	gap: 0.3em;
+}
+.long {
+	width: 24em;
+}
+fieldset > div {
+	display: flex;
+	align-items: center;
+	gap: 0.4em;
+}

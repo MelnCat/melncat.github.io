@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Balatro Malverk texture pack generator</title>
+		<script src="./main.js" async defer type="module"></script>
+		<link rel="stylesheet" href="./style.css" />
+	</head>
+	<body>
+		<h1>Balatro texture pack generator</h1>
+		<p>Only one of each 1x and 2x are required. Having both is also valid.</p>
+		<form id="form">
+			<fieldset>
+				<legend>Joker Textures</legend>
+				<label for="1xjoker">Joker (1x)</label>
+				<input type="file" name="1xjoker" id="1xjoker" />
+				<label for="1xjoker">Joker (2x)</label>
+				<input type="file" name="2xjoker" id="2xjoker" />
+			</fieldset>
+			<fieldset>
+				<legend>Mod Metadata <span class="required">*</span></legend>
+				<div>
+					<label for="modId">Mod ID</label>
+					<input id="modId" name="modId" placeholder="mytexturepack" />
+				</div>
+				<div>
+					<label for="modName">Name</label>
+					<input id="modName" name="modName" placeholder="My Texture Pack" />
+				</div>
+				<div>
+					<label for="modAuthors">Author(s) (comma separated)</label>
+					<input id="modAuthors"  name="modAuthors" placeholder="Me, You, Someone Else" />
+				</div>
+				<div>
+					<label for="modDesc">Description</label>
+					<input id="modDesc" name="modDesc" placeholder="A simple texture pack." class="long" />
+				</div>
+				<div>
+					<label for="modBadgeColor">Badge Color</label>
+					<input id="modBadgeColor" name="modBadgeColor" value="#666665" type="color" />
+				</div>
+				<div>
+					<label for="modBadgeTextColor">Badge Text Color</label>
+					<input id="modBadgeTextColor" name="modBadgeTextColor" value="#ffffff" type="color" />
+				</div>
+				<div>
+					<label for="modVersion">Version</label>
+					<input id="modVersion" name="modVersion" value="1.0.0" />
+				</div>
+				<label for="icon">Icon (optional)</label>
+				<input type="file" name="icon" id="icon" />
+			</fieldset>
+		</form>
+		<button id="processButton">Process</button>
+	</body>
+</html>

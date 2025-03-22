@@ -8,5 +8,8 @@
 	"type": "module",
 	"dependencies": {
 		"fflate": "^0.7.3"
+	},
+	"devDependencies": {
+		"image-js": "^0.36.0"
 	}
 }
