@@ -71,7 +71,7 @@ document.getElementById("processButton").addEventListener("click", async () => {
 				}
 		}
 	}
-	if (!x1Image) x1Image = x2Image.clone().resize({ width: x2Image.width / 2, height: x2Image.height / 2, interpolation: /** @type {"nearestNeighbor"} */ ("bilinear") });
+	if (!x1Image) x1Image = x2Image.clone().resize({ width: x2Image.width / 2, height: x2Image.height / 2, interpolation: "nearestNeighbor" });
 	if (!x2Image) x2Image = x1Image.clone().resize({ width: x1Image.width * 2, height: x1Image.height * 2, interpolation: "nearestNeighbor" });
 	const modName = formData.get("modName").toString().replaceAll('"', '\\"');
 	const modId = formData.get("modId").toString().replaceAll('"', '\\"');
