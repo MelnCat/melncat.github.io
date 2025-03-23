@@ -61,8 +61,8 @@ document.getElementById("processButton").addEventListener("click", async () => {
 		)) {
 			for (let i = joker.pos.x * JOKER_WIDTH * 2; i < joker.pos.x * JOKER_WIDTH * 2 + JOKER_WIDTH * 2; i++)
 				for (let j = joker.pos.y * JOKER_HEIGHT * 2; j < joker.pos.y * JOKER_HEIGHT * 2 + JOKER_HEIGHT * 2; j++) {
-					const vanillaPixel = vanilla1x.getPixelXY(i, j);
-					const imagePixel = x1Image.getPixelXY(i, j);
+					const vanillaPixel = vanilla2x.getPixelXY(i, j);
+					const imagePixel = x2Image.getPixelXY(i, j);
 					const error = vanillaPixel.map((x, i) => Math.abs(imagePixel[i] - x));
 					if (!(vanillaPixel[3] === 0 && imagePixel[3] === 0) && error.some(x => x > 1)) {
 						changed.add(joker.name);
