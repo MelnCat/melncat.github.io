@@ -1,0 +1,19 @@
+<div class="bg">
+    <div class="overlay"></div>
+    <slot />
+</div>
+
+<style>
+    .bg {
+        height: 100%;
+		flex-grow: 1;
+        position: relative;
+    }
+    .overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+    }
+</style>
+
+<script

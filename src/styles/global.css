@@ -1,0 +1,24 @@
+:root {
+	--color-bg: #1f2736;
+	--color-text: #eeede6;
+	--color-link: #ffed65;
+}
+
+html,
+body {
+	margin: 0;
+	width: 100%;
+	min-height: 100dvh;
+}
+* {
+	box-sizing: border-box;
+}
+body {
+	background-color: var(--color-bg);
+	color: var(--color-text);
+	display: flex;
+	flex-direction: column;
+}
+a {
+	color: var(--color-link);
+}

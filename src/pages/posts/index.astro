@@ -1,0 +1,27 @@
+---
+import { Image } from "astro:assets";
+import { getCollection } from "astro:content";
+import Layout from "../../layouts/Layout.astro";
+
+const posts = (await getCollection("posts")).sort((a, b) => +b.data.date - +a.data.date);
+---
+
+<Layout title="Posts">
+	<section>
+		<ul>
+			{
+				posts.map(post => (
+					<li>
+						<a href={`/posts/${post.data.slug}/`}>
+                        {post.id}
+							<h4 class="title">{post.data.title}</h4>
+							<p class="date">
+								{post.data.date}
+							</p>
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</section>
+</Layout>

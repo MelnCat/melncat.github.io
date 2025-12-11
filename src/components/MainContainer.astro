@@ -1,0 +1,22 @@
+---
+import MainBackground from "./MainBackground.astro";
+---
+
+<MainBackground>
+	<main id="main">
+		<slot />
+	</main>
+</MainBackground>
+
+<style>
+	main {
+		max-width: 60em;
+		margin: 0 auto;
+		display: flex;
+		align-items: center;
+		flex-direction: column;
+		margin-bottom: 2em;
+		width: 100%;
+        background-color: var(--color-bg);
+	}
+</style>
