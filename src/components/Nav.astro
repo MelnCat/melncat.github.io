@@ -1,21 +1,33 @@
 <nav>
 	<div><a class="logo" href="/">melncat</a></div>
-    <a href="/posts">Posts</a>
+    <div class="separator">⁂</div>
+	<a href="/posts">Posts</a>
 </nav>
 
 <style>
+    .separator {
+
+    }
+	a {
+		text-decoration: none;
+		&:hover {
+			text-decoration: underline;
+		}
+	}
 	nav {
 		display: flex;
 		gap: 1em;
-        padding: 0.6em 1.2em;
-        align-items: flex-end;
-        justify-content: center;
+		padding: 0.6em 1.2em;
+		align-items: flex-end;
+		justify-content: center;
+		align-items: center;
 	}
 	.logo {
-		text-decoration: none;
-		color: unset;
+		font-family: var(--font-fira-code);
 		font-size: 1.4em;
-		font-variation-settings:
-			"wght" 1000;
+		font-weight: bolder;
+		color: transparent;
+		background-clip: text;
+		background-image: radial-gradient(#87db66, #427435);
 	}
 </style>

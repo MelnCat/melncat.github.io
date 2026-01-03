@@ -12,11 +12,18 @@ export default defineConfig({
 				provider: fontProviders.google(),
 				name: "Roboto",
 				cssVariable: "--font-roboto",
+                weights: [400, 700]
 			},
 			{
 				provider: fontProviders.google(),
 				name: "Cascadia Code",
 				cssVariable: "--font-cascadia-code"
+			},
+			{
+				provider: fontProviders.google(),
+				name: "Fira Code",
+				cssVariable: "--font-fira-code",
+                weights: [400, 700]
 			},
 		],
 	},

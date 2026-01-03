@@ -1,0 +1,14 @@
+---
+import MainContainer from "../../components/MainContainer.astro";
+import Layout from "../../layouts/Layout.astro";
+---
+
+<Layout title="test">
+	<MainContainer>
+		<h1 id="content">a</h1>
+	</MainContainer>
+	<script>
+		const h1 = document.getElementById("content");
+		h1!.innerText = window.matchMedia("(dynamic-range: high)").matches ? "hello" : "bye";
+	</script>
+</Layout>
