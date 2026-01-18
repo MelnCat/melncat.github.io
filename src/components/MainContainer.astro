@@ -10,14 +10,19 @@ import MainBackground from "./MainBackground.astro";
 
 <style>
 	main {
-		max-width: 60em;
+		max-width: min(60em, 100vw - 4em);
 		margin: 0 auto;
 		display: flex;
 		align-items: center;
 		flex-direction: column;
 		margin-bottom: 2em;
+		margin-top: 2em;
 		width: 100%;
 		background-color: var(--color-bg);
 		flex-grow: 1;
+
+		border: 1px solid;
+		border-image-source: linear-gradient(160deg, #b9b9b9aa, #b9b9b945);
+		border-image-slice: 1;
 	}
 </style>
