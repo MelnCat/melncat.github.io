@@ -10,6 +10,7 @@ body {
 	margin: 0;
 	width: 100%;
 	min-height: 100dvh;
+	font-family: var(--font-cascadia-code);
 }
 * {
 	box-sizing: border-box;

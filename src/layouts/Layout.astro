@@ -15,17 +15,17 @@ const { title } = Astro.props;
 	<body>
 		<a href="#main" class="skip-link">Skip to content</a>
 		<Nav />
-		<div class="line" />
+		<div class="line" aria-hidden="true"></div>
 		<slot />
 	</body>
 </html>
 
 <style>
-    .line {
-        width: 100%;
-        height: 1px;
-        background-color: #ffffff33;
-    }
+	.line {
+		width: 100%;
+		height: 1px;
+		background-color: #ffffff33;
+	}
 	.skip-link {
 		position: fixed;
 		top: 0;

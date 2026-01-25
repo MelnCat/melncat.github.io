@@ -14,11 +14,29 @@
 	const rand = (min: number, max: number) => Math.random() * (max - min) + min;
 
 	const objs = new Set<{ x: number; y: number; z: number; vx: number; vy: number }>();
-	for (let i = 0; i < 300 * canvas.height / 1000; i++) {
-		objs.add({ x: rand(0, canvas.width), y: rand(0, canvas.height), z: rand(0, 1), vx: 0, vy: 0 });
+	if (sessionStorage.stars) {
+		for (const star of JSON.parse(sessionStorage.stars)) {
+			objs.add(star);
+		}
+	} else {
+		for (let i = 0; i < (300 * canvas.height) / 1000; i++) {
+			objs.add({ x: rand(-100, canvas.width + 100), y: rand(-100, canvas.height + 10), z: rand(0, 1), vx: 0, vy: 0 });
+		}
+		sessionStorage.stars = JSON.stringify([...objs]);
 	}
 
 	let last = 0;
+	let mouseX = sessionStorage.mouseX ? +sessionStorage.mouseX : 0;
+	let mouseY = sessionStorage.mouseY ? +sessionStorage.mouseY : 0;
+	if (window.matchMedia("(hover: hover)").matches) {
+		document.addEventListener("mousemove", e => {
+			mouseX = e.x;
+			mouseY = e.y;
+            sessionStorage.mouseX = mouseX;
+            sessionStorage.mouseY = mouseY;
+		});
+	}
+
 	const render = (t: number) => {
 		const dt = t - last;
 		last = t;
@@ -39,19 +57,22 @@
 		for (const obj of objs) {
 			obj.x += (obj.vx * dt) / 2;
 			obj.y += (obj.vy * dt) / 2;
-			ctx.strokeStyle = `#ffffff${Math.floor(0x100 * obj.z).toString(16).padStart(2, "0")}`;
+			ctx.strokeStyle = `#ffffff${Math.floor(0x100 * obj.z)
+				.toString(16)
+				.padStart(2, "0")}`;
 			const s = 7 * obj.z + 3;
 			ctx.lineWidth = 2;
 			const scaleZ = 1 - obj.z;
-			const parallaxY = scaleZ * scrollY;
+			const parallaxY = scaleZ * (scrollY + (mouseY / screenY - 0.5) * 0.2);
+			const parallaxX = scaleZ * (mouseX / screenX - 0.5) * 0.2;
 			ctx.beginPath();
-			ctx.moveTo(obj.x - s, obj.y + parallaxY);
-			ctx.lineTo(obj.x + s, obj.y + parallaxY);
+			ctx.moveTo(obj.x + parallaxX - s, obj.y + parallaxY);
+			ctx.lineTo(obj.x + parallaxX + s, obj.y + parallaxY);
 			ctx.stroke();
 			ctx.closePath();
 			ctx.beginPath();
-			ctx.moveTo(obj.x, obj.y + parallaxY - s);
-			ctx.lineTo(obj.x, obj.y + parallaxY + s);
+			ctx.moveTo(obj.x + parallaxX, obj.y + parallaxY - s);
+			ctx.lineTo(obj.x + parallaxX, obj.y + parallaxY + s);
 			ctx.stroke();
 			ctx.closePath();
 
