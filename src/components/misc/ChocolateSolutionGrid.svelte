@@ -79,30 +79,34 @@
 
 <style>
 	.solution {
-        display: flex;
-        flex-direction: column;
-        border: 1px solid #8d8d8d;
-        gap: 0.02em;
-        padding: 0.5em;
+		display: flex;
+		flex-direction: column;
+		border: 1px solid #8d8d8d;
+		gap: 0.02em;
+		padding: 0.5em;
 	}
-    .solution-row {
-        display: flex;
-        gap: 0.14em;
-        &:nth-child(odd) {
-            margin-left: 0.5em;
-        }
-    }
+	.solution-row {
+		display: flex;
+		gap: 0.14em;
+		&:nth-child(odd) {
+			margin-left: 0.5em;
+		}
+	}
 	.solution-grid {
-		display: grid;
-		grid-template-columns: repeat(8, 1fr);
+		display: flex;
+		flex-wrap: wrap;
 		gap: 1em;
+		justify-content: center;
+		@media (width < 940px) {
+			font-size: 0.7em;
+		}
 	}
 	.solution-cell {
 		width: 1em;
 		height: 1em;
-        border-radius: 50%;
+		border-radius: 50%;
 		&[data-type="-1"] {
-            border: #8d8d8d 1.9px dashed;
+			border: #8d8d8d 1.9px dashed;
 		}
 		&[data-type="0"] {
 			background-color: #ffffff;
