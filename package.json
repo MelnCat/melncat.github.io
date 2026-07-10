@@ -19,11 +19,5 @@
 		"react-dom": "^19.2.3",
 		"svelte": "^5.48.2",
 		"typescript": "^5.9.3"
-	},
-	"pnpm": {
-		"onlyBuiltDependencies": [
-			"esbuild",
-			"sharp"
-		]
 	}
 }
