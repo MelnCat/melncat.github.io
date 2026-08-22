@@ -2,16 +2,19 @@
 	import { Spring } from "svelte/motion";
 	import { onMount } from "svelte";
 
-	let weak = $state(true);
+	let weak = $state(false);
+	let displayRot = $state<{ x: number; y: number }>({ x: 0, y: 0 });
 	let rot = $state<Spring<{ x: number; y: number }>>(new Spring({ x: 0, y: 0 }, { stiffness: 0.15, damping: 0.4 }));
 
 	onMount(() => {
-		if (
-			matchMedia("(prefers-reduced-motion: reduce)").matches ||
-			matchMedia("(pointer: coarse)").matches
-		) {
+		if (matchMedia("(prefers-reduced-motion: reduce)").matches || matchMedia("(pointer: coarse)").matches) {
 			weak = true;
 		}
+		const animate = () => {
+			displayRot = rot.current;
+			requestAnimationFrame(animate);
+		};
+		animate();
 	});
 
 	let sticker: HTMLDivElement = $state(null!);
@@ -49,7 +52,7 @@
 	onmousemove={onMouseMove}
 >
 	<svg
-		style:transform={weak ? null : `perspective(800px) rotateX(${-rot!.current.y * 20}deg) rotateY(${rot!.current.x * 20}deg)`}
+		style:transform={weak ? null : `perspective(800px) rotateX(${-displayRot!.y * 20}deg) rotateY(${displayRot!.x * 20}deg)`}
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 1090 260"
 		width="100%"
@@ -65,10 +68,10 @@
 			<linearGradient
 				id="shine"
 				gradientUnits="objectBoundingBox"
-				x1={0.5 + rot!.current.x * 0.2 - 0.35}
-				y1={0.5 + rot!.current.y * 0.2 - 0.35}
-				x2={0.5 + rot!.current.x * 0.2 + 0.35}
-				y2={0.5 + rot!.current.y * 0.2 + 0.35}
+				x1={0.5 + displayRot!.x * 0.2 - 0.35}
+				y1={0.5 + displayRot!.y * 0.2 - 0.35}
+				x2={0.5 + displayRot!.x * 0.2 + 0.35}
+				y2={0.5 + displayRot!.y * 0.2 + 0.35}
 			>
 				<stop offset="30%" stop-color="white" stop-opacity="0" />
 				<stop offset="50%" stop-color="white" stop-opacity="1" />
@@ -78,10 +81,10 @@
 				<linearGradient
 					id="rainbow"
 					gradientUnits="objectBoundingBox"
-					x1={weak ? -0.5 : (-0.5 + rot!.current.x * -0.25)}
-					y1={weak ? 0.5 : (0.5 + rot!.current.y * -0.25)}
-					x2={weak ? -1 : (-1 + rot!.current.x * -0.25)}
-					y2={weak ? 0.8 : (0.8 + rot!.current.y * -0.25)}
+					x1={weak ? -0.5 : -0.5 + displayRot!.x * -0.25}
+					y1={weak ? 0.5 : 0.5 + displayRot!.y * -0.25}
+					x2={weak ? -1 : -1 + displayRot!.x * -0.25}
+					y2={weak ? 0.8 : 0.8 + displayRot!.y * -0.25}
 					spreadMethod="repeat"
 				>
 					<stop offset="0%" stop-color="#ff0000" />
@@ -143,9 +146,9 @@
 		font-weight: 700;
 		filter: url(#stroke);
 	}
-    @media (width < 550px) {
-        .sticker {
-            width: 20em;
-        }
-    }
+	@media (width < 550px) {
+		.sticker {
+			width: 20em;
+		}
+	}
 </style>
