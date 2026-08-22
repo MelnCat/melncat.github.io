@@ -7,7 +7,6 @@
 
 	onMount(() => {
 		if (
-			(navigator.hardwareConcurrency ?? 8) <= 4 ||
 			matchMedia("(prefers-reduced-motion: reduce)").matches ||
 			matchMedia("(pointer: coarse)").matches
 		) {
@@ -144,4 +143,9 @@
 		font-weight: 700;
 		filter: url(#stroke);
 	}
+    @media (width < 550px) {
+        .sticker {
+            width: 20em;
+        }
+    }
 </style>
