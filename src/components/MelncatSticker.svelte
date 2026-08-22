@@ -2,7 +2,7 @@
 	import { Spring } from "svelte/motion";
 	import { onMount } from "svelte";
 
-	let weak = $state(false);
+	let weak = $state(true);
 	let rot = $state<Spring<{ x: number; y: number }>>(new Spring({ x: 0, y: 0 }, { stiffness: 0.15, damping: 0.4 }));
 
 	onMount(() => {
@@ -20,7 +20,7 @@
 	let hovering = $state(false);
 
 	const onMouseMove = (event: MouseEvent) => {
-		if (!hovering || !rot) return;
+		if (!hovering || weak) return;
 		if (lastUpdate + 1000 / 60 > Date.now()) return;
 		const bounds = sticker.getBoundingClientRect();
 		rot.target = {
@@ -50,41 +50,39 @@
 	onmousemove={onMouseMove}
 >
 	<svg
-		style:transform={`perspective(800px) rotateX(${-rot!.current.y * 20}deg) rotateY(${rot!.current.x * 20}deg)`}
+		style:transform={weak ? null : `perspective(800px) rotateX(${-rot!.current.y * 20}deg) rotateY(${rot!.current.x * 20}deg)`}
 		xmlns="http://www.w3.org/2000/svg"
 		viewBox="0 0 1090 260"
 		width="100%"
 		height="100%"
 	>
 		<defs>
-				<filter id="stroke">
-					<feMorphology operator="dilate" radius="30" in="SourceGraphic" result="outline" />
-					<feFlood flood-color="#74c250" result="floodColor" />
-					<feComposite operator="in" in="floodColor" in2="outline" result="coloredOutline" />
-					<feComposite operator="over" in="SourceGraphic" in2="coloredOutline" result="text" />
-				</filter>
+			<filter id="stroke">
+				<feMorphology operator="dilate" radius="30" in="SourceGraphic" result="outline" />
+				<feFlood flood-color="#74c250" result="floodColor" />
+				<feComposite operator="in" in="floodColor" in2="outline" result="coloredOutline" />
+				<feComposite operator="over" in="SourceGraphic" in2="coloredOutline" result="text" />
+			</filter>
+			<linearGradient
+				id="shine"
+				gradientUnits="objectBoundingBox"
+				x1={0.5 + rot!.current.x * 0.2 - 0.35}
+				y1={0.5 + rot!.current.y * 0.2 - 0.35}
+				x2={0.5 + rot!.current.x * 0.2 + 0.35}
+				y2={0.5 + rot!.current.y * 0.2 + 0.35}
+			>
+				<stop offset="30%" stop-color="white" stop-opacity="0" />
+				<stop offset="50%" stop-color="white" stop-opacity="1" />
+				<stop offset="70%" stop-color="white" stop-opacity="0" />
+			</linearGradient>
 			{#if !weak}
-
-				<linearGradient
-					id="shine"
-					gradientUnits="objectBoundingBox"
-					x1={0.5 + rot!.current.x * 0.2 - 0.35}
-					y1={0.5 + rot!.current.y * 0.2 - 0.35}
-					x2={0.5 + rot!.current.x * 0.2 + 0.35}
-					y2={0.5 + rot!.current.y * 0.2 + 0.35}
-				>
-					<stop offset="30%" stop-color="white" stop-opacity="0" />
-					<stop offset="50%" stop-color="white" stop-opacity="1" />
-					<stop offset="70%" stop-color="white" stop-opacity="0" />
-				</linearGradient>
-
 				<linearGradient
 					id="rainbow"
 					gradientUnits="objectBoundingBox"
-					x1={-0.5 + rot!.current.x * -0.25}
-					y1={0.5 + rot!.current.y * -0.25}
-					x2={-1 + rot!.current.x * -0.25}
-					y2={0.8 + rot!.current.y * -0.25}
+					x1={weak ? -0.5 : (-0.5 + rot!.current.x * -0.25)}
+					y1={weak ? 0.5 : (0.5 + rot!.current.y * -0.25)}
+					x2={weak ? -1 : (-1 + rot!.current.x * -0.25)}
+					y2={weak ? 0.8 : (0.8 + rot!.current.y * -0.25)}
 					spreadMethod="repeat"
 				>
 					<stop offset="0%" stop-color="#ff0000" />
@@ -112,8 +110,8 @@
 				opacity="0.5"
 				class="rainbow"
 			/>
-			<rect pointer-events="none" width="1250" height="400" fill="url(#shine)" mask="url(#shineMask)" opacity="0.7" class="shine" />
 		{/if}
+		<rect pointer-events="none" width="1250" height="400" fill="url(#shine)" mask="url(#shineMask)" opacity="0.7" class="shine" />
 	</svg>
 </div>
 
@@ -126,9 +124,6 @@
 		filter: unset;
 		svg {
 			will-change: unset;
-		}
-		text {
-			filter: unset;
 		}
 	}
 	.shine {
