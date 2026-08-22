@@ -43,7 +43,6 @@
 <div
 	bind:this={sticker}
 	class="sticker"
-	class:weak
 	role="img"
 	onmouseenter={() => {
 		hovering = true;
@@ -65,6 +64,13 @@
 				<feComposite operator="in" in="floodColor" in2="outline" result="coloredOutline" />
 				<feComposite operator="over" in="SourceGraphic" in2="coloredOutline" result="text" />
 			</filter>
+			<filter id="light-stroke">
+				<feMorphology operator="dilate" radius="30" in="SourceGraphic" result="original" />
+				<feMorphology operator="dilate" radius="5" in="original" result="outline" />
+				<feFlood flood-color="#6d7178" result="floodColor" />
+				<feComposite operator="in" in="floodColor" in2="outline" />
+				<feComposite operator="out" in="coloredOutline" in2="original" />
+			</filter>
 			<linearGradient
 				id="shine"
 				gradientUnits="objectBoundingBox"
@@ -77,43 +83,39 @@
 				<stop offset="50%" stop-color="white" stop-opacity="1" />
 				<stop offset="70%" stop-color="white" stop-opacity="0" />
 			</linearGradient>
-			{#if !weak}
-				<linearGradient
-					id="rainbow"
-					gradientUnits="objectBoundingBox"
-					x1={weak ? -0.5 : -0.5 + displayRot!.x * -0.25}
-					y1={weak ? 0.5 : 0.5 + displayRot!.y * -0.25}
-					x2={weak ? -1 : -1 + displayRot!.x * -0.25}
-					y2={weak ? 0.8 : 0.8 + displayRot!.y * -0.25}
-					spreadMethod="repeat"
-				>
-					<stop offset="0%" stop-color="#ff0000" />
-					<stop offset="16%" stop-color="#ff6600" />
-					<stop offset="32%" stop-color="#ffff00" />
-					<stop offset="48%" stop-color="#00ff88" />
-					<stop offset="64%" stop-color="#00ccff" />
-					<stop offset="80%" stop-color="#6600ff" />
-					<stop offset="96%" stop-color="#ff00cc" />
-					<stop offset="100%" stop-color="#ff0000" />
-				</linearGradient>
-			{/if}
+			<linearGradient
+				id="rainbow"
+				gradientUnits="objectBoundingBox"
+				x1={weak ? -0.5 : -0.5 + displayRot!.x * -0.25}
+				y1={weak ? 0.5 : 0.5 + displayRot!.y * -0.25}
+				x2={weak ? -1 : -1 + displayRot!.x * -0.25}
+				y2={weak ? 0.8 : 0.8 + displayRot!.y * -0.25}
+				spreadMethod="repeat"
+			>
+				<stop offset="0%" stop-color="#ff0000" />
+				<stop offset="16%" stop-color="#ff6600" />
+				<stop offset="32%" stop-color="#ffff00" />
+				<stop offset="48%" stop-color="#00ff88" />
+				<stop offset="64%" stop-color="#00ccff" />
+				<stop offset="80%" stop-color="#6600ff" />
+				<stop offset="96%" stop-color="#ff00cc" />
+				<stop offset="100%" stop-color="#ff0000" />
+			</linearGradient>
+			<linearGradient id="shadow" gradientUnits="objectBoundingBox" x1={0} y1={0} x2={0} y2={1} spreadMethod="repeat">
+				<stop offset="0%" stop-color="#74777e" />
+				<stop offset="100%" stop-color="#43454d" />
+			</linearGradient>
 			<mask id="shineMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1250" height="400">
-				<text x="20" y="10" class="main" dominant-baseline="hanging">melncat</text>
+				<text x="30" y="15" class="main" dominant-baseline="hanging">melncat</text>
+			</mask>
+			<mask id="shadowMask" maskUnits="userSpaceOnUse" x="0" y="0" width="1250" height="400">
+				<text x="30" y="15" class="main shadow-mask" dominant-baseline="hanging">melncat</text>
 			</mask>
 		</defs>
-		<text x="20" y="10" class="main" dominant-baseline="hanging">melncat</text>
-		{#if !weak}
-			<rect
-				pointer-events="none"
-				width="1250"
-				height="400"
-				fill="url(#rainbow)"
-				mask="url(#shineMask)"
-				opacity="0.5"
-				class="rainbow"
-			/>
-		{/if}
-		<rect pointer-events="none" width="1250" height="400" fill="url(#shine)" mask="url(#shineMask)" opacity="0.7" class="shine" />
+		<text x="30" y="15" class="main" dominant-baseline="hanging">melncat</text>
+		<rect pointer-events="none" width="1250" height="300" fill="url(#rainbow)" mask="url(#shineMask)" opacity="0.5" class="rainbow" />
+		<rect pointer-events="none" width="1250" height="300" fill="url(#shine)" mask="url(#shineMask)" opacity="0.7" class="shine" />
+		<rect pointer-events="none" width="1250" height="300" fill="url(#shadow)" mask="url(#shadowMask)" opacity="1" class="shadow" />
 	</svg>
 </div>
 
@@ -122,17 +124,14 @@
 		width: 30em;
 		font-family: var(--font-strichpunkt-sans);
 	}
-	.weak {
-		filter: unset;
-		svg {
-			will-change: unset;
-		}
-	}
 	.shine {
 		mix-blend-mode: hard-light;
 	}
 	.rainbow {
 		mix-blend-mode: multiply;
+	}
+	.shadow-mask {
+		filter: url(#light-stroke);
 	}
 	svg {
 		overflow: visible;
