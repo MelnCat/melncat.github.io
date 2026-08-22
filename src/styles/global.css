@@ -36,3 +36,7 @@ a {
 @view-transition {
 	navigation: auto;
 }
+
+h1 {
+    margin: var(--space-2) 0;
+}

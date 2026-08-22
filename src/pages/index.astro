@@ -10,14 +10,37 @@ import Layout from "../layouts/Layout.astro";
 			<MelncatSticker client:load />
 		</div>
 		<p>Hello! I don't really have anything to say here.</p>
+		<h1>Profiles</h1>
+		<div class="profiles">
+			<div class="accounts">
+				<a href="https://discord.com/users/413143886702313472">[Discord]</a>
+				<a href="https://github.com/melncat">[Github]</a>
+				<a href="https://modrinth.com/user/melncat">[Modrinth]</a>
+				<a href="https://www.curseforge.com/members/melncat">[Curseforge]</a>
+			</div>
+			<div class="email">
+				<span data-obfuscation>Email: melncat@crab.trade</span>
+			</div>
+		</div>
 	</MainContainer>
 </Layout>
 
 <style>
-    .sticker-container {
-        display: flex;
-        padding: var(--space-4);
-    }
+	.profiles {
+		text-align: center;
+		display: flex;
+		flex-direction: column;
+		gap: var(--space-2);
+	}
+	.sticker-container {
+		display: flex;
+		padding: var(--space-4);
+	}
+	.accounts {
+		display: flex;
+		gap: var(--space-2);
+		flex-wrap: wrap;
+	}
 	header {
 		text-align: center;
 	}
