@@ -1,10 +1,12 @@
 ---
 import MainContainer from "../components/MainContainer.astro";
+import MelncatSticker from "../components/MelncatSticker.svelte";
 import Layout from "../layouts/Layout.astro";
 ---
 
 <Layout title="melncat">
 	<MainContainer>
+        <MelncatSticker client:load />
 		<h1>About</h1>
 		<p>I'm melncat, a current prospective cs major.</p>
 	</MainContainer>

@@ -1,8 +1,5 @@
 <div class="bg">
-	<div class="overlay">
-		<canvas id="bgCanvas"></canvas>
-	</div>
-	<slot />
+	<canvas id="bgCanvas"></canvas>
 </div>
 
 <script>
@@ -84,24 +81,18 @@
 
 <style>
 	.bg {
-		height: 100%;
-		flex-grow: 1;
-		position: relative;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100dvw;
+        height: 100dvh;
 		background-image: linear-gradient(#111111, #223172 30%, #c76569 60%, #e29051);
 		display: flex;
 		flex-direction: column;
-		z-index: 0;
+		z-index: -2;
 	}
 	#bgCanvas {
 		width: 100%;
 		height: 100%;
-	}
-	.overlay {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		z-index: -1;
 	}
 </style>

@@ -2,11 +2,10 @@
 import MainBackground from "./MainBackground.astro";
 ---
 
-<MainBackground>
-	<main id="main">
-		<slot />
-	</main>
-</MainBackground>
+<MainBackground />
+<main id="main">
+	<slot />
+</main>
 
 <style>
 	main {
@@ -24,10 +23,10 @@ import MainBackground from "./MainBackground.astro";
 		border: 1px solid;
 		border-image-source: linear-gradient(160deg, #b9b9b9aa, #b9b9b945);
 		border-image-slice: 1;
-        padding-bottom: 1em;
+		padding-bottom: 1em;
 
-        h1 {
-            text-align: center;
-        }
+		h1 {
+			text-align: center;
+		}
 	}
 </style>
