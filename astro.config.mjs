@@ -28,6 +28,12 @@ export default defineConfig({
 			cssVariable: "--font-fira-code",
 			weights: [400, 700],
 		},
+		{
+			provider: fontProviders.google(),
+			name: "Strichpunkt Sans",
+			cssVariable: "--font-strichpunkt-sans",
+			weights: [400, 700],
+		},
 	],
 
 	integrations: [mdx(), react(), svelte()],
