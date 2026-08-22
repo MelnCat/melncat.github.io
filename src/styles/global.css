@@ -8,7 +8,7 @@
 	--space-7: 4rem;
 
 	--color-bg-dark: #11151e;
-	--color-bg: #1f2736;
+	--color-bg: #192130;
 	--color-text: #eeede6;
 	--color-link: #ffed65;
 }
@@ -18,7 +18,7 @@ body {
 	margin: 0;
 	width: 100%;
 	min-height: 100dvh;
-	font-family: var(--font-strichpunkt-sans);
+	font-family: var(--font-mulish);
 }
 * {
 	box-sizing: border-box;
@@ -31,4 +31,8 @@ body {
 }
 a {
 	color: var(--color-link);
+}
+
+@view-transition {
+	navigation: auto;
 }

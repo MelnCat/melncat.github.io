@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { Spring } from "svelte/motion";
 
-	const rot = new Spring({ x: 0, y: 0 }, { stiffness: 0.15, damping: 0.6 });
+	const rot = new Spring({ x: 0, y: 0 }, { stiffness: 0.15, damping: 0.4 });
 
 	let sticker: HTMLDivElement = $state(null!);
 	let hovering = $state(false);
@@ -45,6 +45,12 @@
 				<feComposite operator="in" in="floodColor" in2="outline" result="coloredOutline" />
 				<feComposite operator="over" in="SourceGraphic" in2="coloredOutline" result="text" />
 			</filter>
+			<filter id="light-stroke">
+				<feMorphology operator="dilate" radius="2" in="SourceGraphic" result="outline" />
+				<feFlood flood-color="#aa9999" result="floodColor" />
+				<feComposite operator="in" in="floodColor" in2="outline" result="coloredOutline" />
+				<feComposite operator="over" in="SourceGraphic" in2="coloredOutline" result="text" />
+			</filter>
 
 			<linearGradient
 				id="shine"
@@ -83,13 +89,14 @@
 			</linearGradient>
 		</defs>
 		<text x="20" y="10" class="main" dominant-baseline="hanging">melncat</text>
-		<rect width="1250" height="400" fill="url(#rainbow)" mask="url(#shineMask)" opacity="0.5" class="rainbow" />
-		<rect width="1250" height="400" fill="url(#shine)" mask="url(#shineMask)" opacity="0.7" class="shine" />
+		<rect pointer-events="none" width="1250" height="400" fill="url(#rainbow)" mask="url(#shineMask)" opacity="0.5" class="rainbow" />
+		<rect pointer-events="none" width="1250" height="400" fill="url(#shine)" mask="url(#shineMask)" opacity="0.7" class="shine" />
 	</svg>
 </div>
 
 <style>
 	.sticker {
+		filter: url(#light-stroke);
 		width: 30em;
 		font-family: var(--font-strichpunkt-sans);
 	}

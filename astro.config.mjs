@@ -34,6 +34,12 @@ export default defineConfig({
 			cssVariable: "--font-strichpunkt-sans",
 			weights: [400, 700],
 		},
+		{
+			provider: fontProviders.google(),
+			name: "Mulish",
+			cssVariable: "--font-mulish",
+			weights: [400, 700],
+		},
 	],
 
 	integrations: [mdx(), react(), svelte()],
