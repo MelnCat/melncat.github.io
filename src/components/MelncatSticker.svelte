@@ -4,15 +4,18 @@
 	const rot = new Spring({ x: 0, y: 0 }, { stiffness: 0.15, damping: 0.4 });
 
 	let sticker: HTMLDivElement = $state(null!);
+	let lastUpdate = 0;
 	let hovering = $state(false);
 
 	const onMouseMove = (event: MouseEvent) => {
 		if (!hovering) return;
+		if (lastUpdate + 1000 / 60 > Date.now()) return;
 		const bounds = sticker.getBoundingClientRect();
 		rot.target = {
 			x: 2 * ((event.clientX - bounds.left) / bounds.width - 0.5),
 			y: 2 * ((event.clientY - bounds.top) / bounds.height - 0.5),
 		};
+		lastUpdate = Date.now();
 	};
 	const onMouseLeave = () => {
 		rot.target = { x: 0, y: 0 };
@@ -20,7 +23,7 @@
 	};
 </script>
 
-<svelte:window onmousemove={onMouseMove} />
+<svelte:window />
 
 <div
 	bind:this={sticker}
@@ -30,6 +33,7 @@
 		hovering = true;
 	}}
 	onmouseleave={onMouseLeave}
+	onmousemove={onMouseMove}
 >
 	<svg
 		style:transform={`perspective(800px) rotateX(${-rot.current.y * 20}deg) rotateY(${rot.current.x * 20}deg)`}
@@ -108,6 +112,7 @@
 	}
 	svg {
 		overflow: visible;
+		will-change: transform;
 	}
 	.main {
 		fill: #1c611b;
